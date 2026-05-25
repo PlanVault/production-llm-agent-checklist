@@ -3,21 +3,26 @@
 > A practical reference for engineering teams moving LLM agents from demos to production. This document covers typical failure modes and deterministic controls required when AI agents have access to internal tools, APIs, databases, workflow systems, or customer-visible actions.
 >
 > **Core Principle:** An LLM should never be the sole decision-maker and execution engine. The model plans or interprets; a deterministic runtime validates, limits, executes, audits, and can deny.
+>
+> This checklist covers runtime security for production agents. If you are looking for IDE and team development guidelines, check out our [AI-Assisted Engineering Playbook](https://github.com/PlanVault/ai-engineering-playbook).
 
 ---
 
-## TL;DR
+## TL;DR: The 3 Pillars of Agent Security
 
-1. **Minimize context.** Do not send raw, massive API responses, full chat histories, or deeply nested structures to the LLM without compression.
-2. **Redact and mask data.** Replace PII, secrets, UUIDs, and synthetic internal IDs with safe aliases before the LLM boundary. Map them back during execution.
-3. **Classify tools by risk.** Categorize actions: read-only, low-risk mutation, high-risk mutation, destructive, external side effect, or customer-visible.
-4. **Validate before execution.** JSON schema validation is not enough. Enforce business invariants, tenant scopes, approval gates, and idempotency.
-5. **Cap autonomous self-correction.** Set hard limits on retries, RAG loops, tool calls, and budget exhaustion. Do not let agents loop infinitely.
-6. **Separate the planner from the executor.** The LLM proposes an action; the deterministic executor accepts or rejects it based on state and policy.
-7. **Enforce HITL (Human-in-the-Loop).** Require explicit human approval for high-risk, destructive, or external actions.
-8. **Treat RAG as untrusted data.** Retrieved documents and tool outputs are untrusted data, not system instructions. Protect against prompt injections.
-9. **Ensure auditability and replayability.** Prompt versions, selected tools, parameters, approvals, outputs, and errors must be deterministically reproducible.
-10. **Test agent behavior as a product surface.** Golden cases, adversarial prompts, tool-choice regressions, and budget regressions must be part of your CI/CD and release discipline.
+**1. Data & Context Boundaries**
+* **Minimize & Redact:** Never send raw secrets, PII, or internal UUIDs to the LLM. Map them to safe aliases before the boundary.
+* **Flatten Structures:** Deep JSON trees confuse models. Pass simple, flattened DTOs.
+* **Treat Data as Untrusted:** RAG outputs and web searches are untrusted inputs, not system instructions.
+
+**2. Deterministic Execution**
+* **The LLM Proposes, the Runtime Disposes:** The model plans an action; a deterministic layer validates policy, tenant scope, and limits *before* execution.
+* **Tool Risk Classes:** Not all tools are equal. Read-only tools pass; high-risk mutations require Human-in-the-Loop (HITL) approval.
+* **Idempotency is Mandatory:** Never retry a high-risk mutation without an idempotency key.
+
+**3. Budget & Loop Guardrails**
+* **Cap Autonomous Behavior:** Set hard limits on RAG loops, tool retries, and budget exhaustion. Prevent infinite API loops.
+* **Audit Everything:** Replayability requires logging prompt versions, tool choices, and parameter hashes (not just the raw text).
 
 ---
 
@@ -229,4 +234,14 @@ For every run/step, log (stripping all PII and secrets):
 
 ---
 
-*This checklist is maintained by the engineering team at **[PlanVault](https://planvault.ai)** — an event-sourced execution layer for AI agents. We mapped these failure modes while building our core engine to prevent prompt injections, enforce approval gates, and secure tool calls. If your team is struggling with AI governance in production, feel free to use these principles or check out how we solve it.*
+## 17. The Missing Layer: PlanVault
+
+This checklist is maintained by the engineering team at **[PlanVault](https://planvault.ai)**.
+
+While you can build these guardrails from scratch, maintaining state machines, alias mapping, and cryptographic HITL approvals takes months of engineering effort. **PlanVault is an event-sourced execution layer** that handles all of this out-of-the-box.
+
+👉 **Next Step:** If your team needs development-time guardrails, check out our [AI-Assisted Engineering Playbook](https://github.com/PlanVault/ai-engineering-playbook). If you are moving agents to production and need to enforce these controls without slowing down development, [let's schedule a 15-min Architecture Sync](https://calendly.com/admin-planvault/15min).
+
+---
+
+**License:** This checklist is released under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). You are free to share and adapt it for your internal engineering guidelines.
