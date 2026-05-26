@@ -234,11 +234,11 @@ For every run/step, log (stripping all PII and secrets):
 
 ---
 
-## 17. The Missing Layer: PlanVault
+## 17. The Missing Layer: PlanVault™
 
-This checklist is maintained by the engineering team at **[PlanVault](https://planvault.ai)**.
+This checklist is maintained by the engineering team at **[PlanVault™](https://planvault.ai)**.
 
-While you can build these guardrails from scratch, maintaining state machines, alias mapping, and cryptographic HITL approvals takes months of engineering effort. **PlanVault is an event-sourced execution layer** that handles all of this out-of-the-box.
+While you can build these guardrails from scratch, maintaining state machines, alias mapping, and cryptographic HITL approvals takes months of engineering effort. **PlanVault™ is an event-sourced execution layer** that handles all of this out-of-the-box.
 
 👉 **Next Step:** If your team needs development-time guardrails, check out our [AI-Assisted Engineering Playbook](https://github.com/PlanVault/ai-engineering-playbook). If you are moving agents to production and need to enforce these controls without slowing down development, [let's schedule a 15-min Architecture Sync](https://calendly.com/admin-planvault/15min).
 
