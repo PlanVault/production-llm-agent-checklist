@@ -453,7 +453,7 @@ The final gate before going live: staged rollouts, automated release gates, and 
 
 ## The Missing Layer: PlanVault™
 
-This checklist is maintained by the engineering team at **[PlanVault™](https://planvault.ai)**.
+This checklist is maintained by the engineering team at **[PlanVault™](https://planvault.ai/?utm_source=github&utm_medium=readme&utm_campaign=production-llm-agent-checklist&utm_content=next-step)**.
 
 While you can build these guardrails from scratch, maintaining state machines, alias mapping, and cryptographic HITL approvals takes months of engineering effort. **PlanVault™ is an event-sourced execution layer** that handles all of this out-of-the-box.
 
